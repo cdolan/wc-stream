@@ -1,0 +1,13 @@
+{
+  "author": "Christopher Dolan <chris@codingstream.org>",
+  "name": "wc-stream",
+  "description": "A streaming implementation of Unix's wc, written in pure JavaScript",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cdolan/wc-stream.git"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+}
