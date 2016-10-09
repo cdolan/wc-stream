@@ -1,13 +1,27 @@
 {
-  "author": "Christopher Dolan <chris@codingstream.org>",
   "name": "wc-stream",
-  "description": "A streaming implementation of Unix's wc, written in pure JavaScript",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "Streaming implementation of UNIX wc for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/cdolan/wc-stream.git"
+    "url": "git+https://github.com/cdolan/wc-stream.git"
   },
-  "dependencies": {},
-  "devDependencies": {},
-  "optionalDependencies": {}
+  "keywords": [
+    "unix",
+    "wc"
+  ],
+  "author": "Christopher Dolan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cdolan/wc-stream/issues"
+  },
+  "homepage": "https://github.com/cdolan/wc-stream#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.0"
+  }
 }

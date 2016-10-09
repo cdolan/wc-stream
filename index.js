@@ -1,77 +1,57 @@
-var stream = require('stream')
-  , util = require('util');
+const Transform = require('stream').Transform;
 
-var WCStream = function(quant) {
-  switch (quant) {
-    case 'char':
-    case 'word':
-    case 'line':
-      this.quant = quant;
-      break;
-    default:
-      throw new Error('Quantifier must be specified');
+class WordCount extends Transform {
+  constructor() {
+    super({ readableObjectMode: true });
+
+    this._chars = 1;
+    this._lines = 1;
+    this._words = 0;
   }
 
-  this.count = 0;
-  this.space = true;
-  this.readable = true;
-  this.writable = true;
-};
+  _transform(chunk, encoding, callback) {
+    const data = chunk.toString();
 
-util.inherits(WCStream, stream.Stream);
+    this._countChars(data);
+    this._countLines(data);
+    this._countWords(data);
 
-WCStream.prototype.write = function(data) {
-  switch (this.quant) {
-    case 'char':
-      this.count += data.length;
-      break;
-    case 'word':
-      var str = data.toString();
-      for (var i = 0; i < str.length; i++) {
-        if (isspace(str[i])) {
-          this.space = true;
-        } else {
-          if (this.space) {
-            this.space = false;
-            this.count++;;
-          }
-        }
+    callback();
+  }
+
+  _flush(callback) {
+    this.push({ word: this._words, line: this._lines, char: this._chars });
+    callback();
+  }
+
+  _countChars(data) {
+    this._chars += data.length;
+  }
+
+  _countLines(data) {
+    for (let char of data) {
+      if (char === '\n')
+        this._lines++;
+    }
+  }
+
+  _countWords(data) {
+    let inWord = false;
+    let isWhitespace = (c) => { return c === ' ' || c === '\n' }
+
+    for (let char of data) {
+      if (!isWhitespace(char)) {
+        if (!inWord)
+          this._words++;
+
+        inWord = true;
+      } else {
+        inWord = false;
       }
-      break;
-    case 'line':
-      var str = data.toString();
-      for (var i = 0; i < str.length; i++) {
-        if (str[i] === '\n') {
-          this.count++;
-        }
-      }
-      break;
+    }
   }
-};
-
-WCStream.prototype.end = function(data) {
-  if (data) {
-    this.write(data);
-  }
-
-  this.emit('data', this.count.toString());
-  this.emit('end');
-
-  this.count = 0;
-  this.space = true;
-};
-
-function isspace(c) {
-  return c === ' ' ||
-         c === '\t' ||
-         c === '\n' ||
-         c === '\v' ||
-         c === '\f' ||
-         c === '\r';
 }
 
-exports = module.exports = function(quant) {
-  return new WCStream(quant);
-};
-
-exports.WCStream = WCStream;
+module.exports = function () {
+  return new WordCount();
+}

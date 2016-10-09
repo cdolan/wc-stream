@@ -1,29 +1,35 @@
 wc-stream
-=========
+==========
 
-Streaming implementation of Unix's wc, written in pure JavaScript
+Streams implementation of `wc(1)`.
 
-## Installation
+Example
+========
 
-    $ npm install wc-stream
+```js
+const wc = require('wc-stream');
 
-##Example
-```javascript
-var fs = require('fs')
-  , wc = require('wc-stream');
-
-var lineCount = wc('line');
-
-fs.createReadStream('./example.txt')
-  .pipe(lineCount)
-  .pipe(process.stdout);
+process.stdin
+  .pipe(wc())
+  .on('data', function (count) {
+    console.dir(count);
+  })
 ```
 
-## Usage
+```
+$ echo 'foo bar' | node example.js
+{ word: 2, line: 1, char: 8 }
+```
 
-### wc(quant)
+Usage
+======
 
-Count streamed input by `quant`, either 'char', 'line', or 'word'.
+wc()
+-----
 
-## License
-The MIT License
+Create an object mode Transform stream. See [example](#example) above.
+
+License
+========
+
+ISC License.
