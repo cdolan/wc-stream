@@ -1,5 +1,6 @@
 wc-stream
 ==========
+[![Build Status](https://travis-ci.org/cdolan/wc-stream.svg?branch=master)](https://travis-ci.org/cdolan/wc-stream)
 
 Streams implementation of `wc(1)`.
 
