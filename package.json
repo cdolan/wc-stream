@@ -2,6 +2,9 @@
   "name": "wc-stream",
   "version": "1.0.0",
   "description": "Streaming implementation of UNIX wc for Node.js",
+  "engines": {
+    "node": ">= 6"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha"
